@@ -14,10 +14,10 @@
         :root {
             --dark: #1a1a2e;
             --dark-blue: #16213e;
-            --red: #e94560;
+            --red: #B91C39; /* Acessibilidade: Contraste corrigido */
             --white: #ffffff;
             --gray: #a8b2d1;
-            --gray-dark: #64748b;
+            --gray-dark: #8899B5; /* Acessibilidade: Contraste corrigido */
             --card-bg: rgba(22, 33, 62, 0.7);
             --border: rgba(255, 255, 255, 0.1);
             --success: #10b981;
@@ -43,7 +43,6 @@
             width: 100%;
         }
 
-        /* Navegação */
         nav {
             position: fixed;
             top: 0;
@@ -100,9 +99,9 @@
         }
 
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(233, 69, 96, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(185, 28, 57, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(185, 28, 57, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(185, 28, 57, 0); }
         }
 
         .menu-toggle {
@@ -119,7 +118,6 @@
             stroke: var(--white);
         }
 
-        /* Hero Section */
         .hero {
             padding: 120px 0 80px;
             background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
@@ -192,7 +190,7 @@
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(233, 69, 96, 0.4);
+            box-shadow: 0 15px 40px rgba(185, 28, 57, 0.4);
         }
 
         .btn-secondary {
@@ -205,7 +203,6 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        /* Trust Badges */
         .trust-badges {
             display: flex;
             justify-content: center;
@@ -222,7 +219,6 @@
             font-size: clamp(13px, 1.5vw, 15px);
         }
 
-        /* Sections Base */
         section {
             padding: 80px 0;
         }
@@ -243,7 +239,6 @@
             font-size: clamp(15px, 2vw, 20px);
         }
 
-        /* Pain Points */
         .pain-points {
             background: var(--dark-blue);
             border-top: 1px solid var(--border);
@@ -266,11 +261,11 @@
 
         .pain-card:hover {
             transform: scale(1.05);
-            border-color: var(--red);
+            border-color: #FF7A8F;
         }
 
         .pain-card h3 {
-            color: var(--red);
+            color: var(--white);
             margin-bottom: 10px;
             font-size: clamp(17px, 2.5vw, 20px);
         }
@@ -278,9 +273,9 @@
         .pain-card p {
             font-size: clamp(14px, 1.8vw, 16px);
             line-height: 1.6;
+            color: var(--gray);
         }
 
-        /* About Section */
         .about {
             background: var(--dark);
         }
@@ -316,13 +311,12 @@
 
         .story-highlight {
             background: rgba(233, 69, 96, 0.1);
-            border-left: 4px solid var(--red);
+            border-left: 4px solid #FF7A8F;
             padding: 20px;
             border-radius: 10px;
             margin: 30px 0;
         }
 
-        /* Stats Section */
         .stats {
             background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
         }
@@ -350,7 +344,7 @@
         .stat-number {
             font-size: clamp(32px, 5vw, 48px);
             font-weight: bold;
-            color: var(--red);
+            color: #FF7A8F;
             margin-bottom: 10px;
         }
 
@@ -365,7 +359,6 @@
             font-size: clamp(13px, 1.8vw, 15px);
         }
 
-        /* Testimonials */
         .testimonials {
             background: var(--dark);
         }
@@ -416,7 +409,6 @@
             font-size: 14px;
         }
 
-        /* Solutions */
         .solutions {
             background: var(--dark-blue);
         }
@@ -439,7 +431,7 @@
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: var(--red);
+            border-color: #FF7A8F;
         }
 
         .card-result {
@@ -459,7 +451,7 @@
         }
 
         .card-problem {
-            color: var(--red);
+            color: #FF7A8F; /* Acessibilidade: Contraste corrigido */
             font-weight: 600;
             margin-bottom: 10px;
             font-size: clamp(14px, 1.8vw, 16px);
@@ -484,13 +476,16 @@
             gap: 10px;
             font-size: clamp(13px, 1.8vw, 15px);
         }
+        
+        .card li svg {
+            stroke: #FF7A8F; /* Corrigido para combinar com .card-problem */
+        }
 
         .card .btn {
             width: 100%;
             margin-top: 15px;
         }
 
-        /* Process */
         .process {
             background: var(--dark);
         }
@@ -529,7 +524,6 @@
             font-size: clamp(13px, 1.8vw, 16px);
         }
 
-        /* CTA Section */
         .cta-section {
             padding: 100px 0;
             background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
@@ -538,7 +532,7 @@
 
         .cta-urgency {
             background: rgba(233, 69, 96, 0.2);
-            color: var(--red);
+            color: #FF7A8F; /* Acessibilidade: Contraste corrigido */
             padding: 10px 25px;
             border-radius: 20px;
             display: inline-block;
@@ -547,7 +541,6 @@
             font-size: clamp(13px, 1.8vw, 16px);
         }
 
-        /* Footer */
         footer {
             background: var(--dark);
             padding: 60px 0 30px;
@@ -561,7 +554,7 @@
             margin-bottom: 40px;
         }
 
-        .footer-section h4 {
+        .footer-section h3 { /* Acessibilidade: h4 para h3 */
             margin-bottom: 20px;
             font-size: clamp(17px, 2.5vw, 20px);
         }
@@ -596,7 +589,6 @@
             font-size: clamp(12px, 1.5vw, 14px);
         }
 
-        /* Mobile Menu */
         .mobile-menu {
             display: none;
             position: fixed;
@@ -648,117 +640,27 @@
             display: block;
         }
 
-        /* Mobile Responsivo */
         @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-
-            .mobile-menu {
-                display: block;
-            }
-
-            .hero {
-                padding: 100px 0 60px;
-                min-height: auto;
-            }
-
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-            }
-
-            .btn {
-                width: 100%;
-                max-width: 280px;
-            }
-
-            .about-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 30px;
-            }
-
-            .founder-image {
-                margin: 0 auto;
-            }
-
-            .trust-badges {
-                flex-direction: column;
-                gap: 15px;
-                align-items: center;
-            }
-
-            .pain-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .testimonial-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .process-steps {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-
-            .footer-section li {
-                justify-content: center;
-            }
-
-            section {
-                padding: 50px 0;
-            }
-
-            .container {
-                padding: 0 15px;
-            }
+            .nav-menu { display: none; }
+            .menu-toggle { display: block; }
+            .mobile-menu { display: block; }
+            .hero { padding: 100px 0 60px; min-height: auto; }
+            .hero-buttons { flex-direction: column; align-items: center; width: 100%; }
+            .btn { width: 100%; max-width: 280px; }
+            .about-content { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+            .founder-image { margin: 0 auto; }
+            .trust-badges { flex-direction: column; gap: 15px; align-items: center; }
+            .pain-grid, .cards-grid, .testimonial-grid, .process-steps, .stats-grid, .footer-grid { grid-template-columns: 1fr; }
+            .footer-grid { text-align: center; }
+            .footer-section li { justify-content: center; }
+            section { padding: 50px 0; }
+            .container { padding: 0 15px; }
         }
 
-        /* Tablet */
         @media (min-width: 769px) and (max-width: 1024px) {
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 40px;
-                text-align: center;
-            }
-
-            .cards-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .testimonial-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .pain-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .nav-menu {
-                gap: 15px;
-            }
+            .about-content { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+            .cards-grid, .testimonial-grid, .pain-grid, .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav-menu { gap: 15px; }
         }
     </style>
 </head>
@@ -775,7 +677,7 @@
                     <li><a href="#processo">Como Funciona</a></li>
                     <li><a href="https://wa.me/553791326304?text=Olá! Quero meu diagnóstico gratuito" class="nav-cta">Diagnóstico Grátis</a></li>
                 </ul>
-                <button class="menu-toggle" onclick="toggleMenu()">
+                <button class="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menu de navegação">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -825,7 +727,7 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                         </svg>
-                        <span>+50 empresas transformadas</span>
+                        <span>Diversas empresas transformadas</span>
                     </div>
                     <div class="trust-badge">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -892,7 +794,7 @@
         <div class="container">
             <div class="about-content">
                 <div>
-                    <img src="https://a1c447345653bf343ff8d48291913333.cdn.bubble.io/f1757415698267x999496160429774300/WhatsApp%20Image%202025-09-09%20at%2007.55.40.jpeg?_gl=1*3uma87*_gcl_au*MTE5OTc0NzQxMS4xNzU2OTAzODc5*_ga*ODQ1NzA3MTQ5LjE3NDQyODk2MjE.*_ga_BFPVR2DEE2*czE3NTc0MTU2NTgkbzM3JGcxJHQxNzU3NDQ4NjAzJGozNiRsMCRoMA.." alt="João Paulo - Fundador NCodes" class="founder-image" loading="lazy">
+                    <img src="https://a1c447345653bf343ff8d48291913333.cdn.bubble.io/f1757415698267x999496160429774300/WhatsApp%20Image%202025-09-09%20at%2007.55.40.jpeg?_gl=1*3uma87*_gcl_au*MTE5OTc0NzQxMS4xNzU2OTAzODc5*_ga*ODQ1NzA3MTQ5LjE3NDQyODk2MjE.*_ga_BFPVR2DEE2*czE3NTc0MTU2NTgkbzM3JGcxJHQxNzU3NDQ4NjAzJGozNiRsMCRoMA.." alt="Rodrigo Vale - Fundador NCodes" class="founder-image" loading="lazy">
                 </div>
                 <div class="story-content">
                     <h2>Eu entendo sua <span class="gradient-text">frustração</span></h2>
@@ -1221,14 +1123,14 @@
                     <p style="color: var(--gray);">Automatizamos negócios em 15 dias.</p>
                     <div style="margin-top: 20px;">
                         <p style="color: var(--gray); font-size: 13px; line-height: 1.8;">
-                            <strong>+50 empresas</strong> automatizadas<br>
+                            <strong>Diversas empresas</strong> automatizadas<br>
                             <strong>R$ 500k+</strong> economizados/mês<br>
                             <strong>100%</strong> de satisfação
                         </p>
                     </div>
                 </div>
                 <div class="footer-section">
-                    <h4>Soluções</h4>
+                    <h3>Soluções</h3>
                     <ul>
                         <li><a href="#solucoes">Chatbot 24/7</a></li>
                         <li><a href="#solucoes">Automação Total</a></li>
@@ -1238,7 +1140,7 @@
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Contato Direto</h4>
+                    <h3>Contato Direto</h3>
                     <ul>
                         <li style="color: var(--gray);">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -1278,18 +1180,23 @@
         function toggleMenu() {
             const menu = document.querySelector('.mobile-menu');
             const overlay = document.querySelector('.mobile-overlay');
+            const button = document.querySelector('.menu-toggle');
             
             menu.classList.toggle('active');
             overlay.classList.toggle('active');
+
+            const isExpanded = menu.classList.contains('active');
+            button.setAttribute('aria-expanded', isExpanded);
             
-            if (menu.classList.contains('active')) {
+            if (isExpanded) {
                 document.body.style.overflow = 'hidden';
+                button.setAttribute('aria-label', 'Fechar menu de navegação');
             } else {
                 document.body.style.overflow = 'auto';
+                button.setAttribute('aria-label', 'Abrir menu de navegação');
             }
         }
 
-        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
