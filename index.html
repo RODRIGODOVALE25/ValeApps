@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ncodes - Soluções em Inteligência Artificial</title>
+    <title>NCodes - Automatize Seu Negócio em 15 Dias</title>
     <style>
         * {
             margin: 0;
@@ -20,6 +20,12 @@
             --gray-dark: #64748b;
             --card-bg: rgba(22, 33, 62, 0.7);
             --border: rgba(255, 255, 255, 0.1);
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -34,28 +40,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-        }
-
-        /* SVG Icon Styles */
-        .icon {
-            stroke: currentColor;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            fill: none;
-            vertical-align: middle;
-        }
-
-        .icon-red {
-            stroke: var(--red);
-        }
-
-        .icon-white {
-            stroke: var(--white);
-        }
-
-        .icon-gray {
-            stroke: var(--gray);
+            width: 100%;
         }
 
         /* Navegação */
@@ -82,13 +67,14 @@
             font-weight: bold;
             background: linear-gradient(135deg, #fff 0%, #e94560 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .nav-menu {
             display: flex;
             list-style: none;
-            gap: 30px;
+            gap: 25px;
             align-items: center;
         }
 
@@ -96,6 +82,7 @@
             color: var(--gray);
             text-decoration: none;
             transition: color 0.3s;
+            font-size: 15px;
         }
 
         .nav-menu a:hover {
@@ -104,10 +91,18 @@
 
         .nav-cta {
             background: var(--red);
-            color: white;
-            padding: 10px 25px;
+            color: white !important;
+            padding: 10px 20px;
             border-radius: 25px;
             text-decoration: none;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(233, 69, 96, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(233, 69, 96, 0); }
         }
 
         .menu-toggle {
@@ -116,6 +111,12 @@
             border: none;
             cursor: pointer;
             padding: 5px;
+        }
+
+        .menu-toggle svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--white);
         }
 
         /* Hero Section */
@@ -129,26 +130,28 @@
 
         .hero-content {
             text-align: center;
+            width: 100%;
         }
 
         .hero h1 {
-            font-size: 48px;
+            font-size: clamp(28px, 5vw, 52px);
             line-height: 1.2;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             font-weight: 800;
         }
 
         .gradient-text {
             background: linear-gradient(135deg, #fff 0%, #e94560 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 20px;
+            font-size: clamp(16px, 2.5vw, 22px);
             color: var(--gray);
-            margin-bottom: 30px;
-            max-width: 600px;
+            margin-bottom: 40px;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -158,6 +161,7 @@
             gap: 20px;
             justify-content: center;
             flex-wrap: wrap;
+            margin-bottom: 30px;
         }
 
         .btn {
@@ -167,8 +171,18 @@
             font-weight: 600;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
             transition: all 0.3s;
+            font-size: clamp(14px, 2vw, 16px);
+            white-space: nowrap;
+            min-width: 200px;
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
         }
 
         .btn-primary {
@@ -191,50 +205,220 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        /* Stats Section */
-        .stats {
-            background: var(--dark-blue);
-            padding: 60px 0;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        /* Trust Badges */
+        .trust-badges {
+            display: flex;
+            justify-content: center;
             gap: 30px;
-            text-align: center;
+            flex-wrap: wrap;
+            margin-top: 50px;
         }
 
-        .stat-number {
-            font-size: 36px;
-            font-weight: bold;
-            color: var(--red);
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             color: var(--gray);
+            font-size: clamp(13px, 1.5vw, 15px);
         }
 
-        /* Solutions Section */
-        .solutions {
+        /* Sections Base */
+        section {
             padding: 80px 0;
         }
 
         .section-title {
             text-align: center;
-            font-size: 36px;
+            font-size: clamp(24px, 4vw, 38px);
             margin-bottom: 20px;
         }
 
         .section-subtitle {
             text-align: center;
             color: var(--gray);
-            margin-bottom: 60px;
-            max-width: 600px;
+            margin-bottom: 50px;
+            max-width: 700px;
             margin-left: auto;
             margin-right: auto;
+            font-size: clamp(15px, 2vw, 20px);
+        }
+
+        /* Pain Points */
+        .pain-points {
+            background: var(--dark-blue);
+            border-top: 1px solid var(--border);
+        }
+
+        .pain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .pain-card {
+            background: rgba(233, 69, 96, 0.05);
+            border: 1px solid rgba(233, 69, 96, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+
+        .pain-card:hover {
+            transform: scale(1.05);
+            border-color: var(--red);
+        }
+
+        .pain-card h3 {
+            color: var(--red);
+            margin-bottom: 10px;
+            font-size: clamp(17px, 2.5vw, 20px);
+        }
+
+        .pain-card p {
+            font-size: clamp(14px, 1.8vw, 16px);
+            line-height: 1.6;
+        }
+
+        /* About Section */
+        .about {
+            background: var(--dark);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: minmax(300px, 400px) 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .founder-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            display: block;
+            object-fit: cover;
+        }
+
+        .story-content h2 {
+            font-size: clamp(24px, 4vw, 36px);
+            margin-bottom: 20px;
+        }
+
+        .story-content p {
+            color: var(--gray);
+            margin-bottom: 20px;
+            font-size: clamp(15px, 2vw, 18px);
+            line-height: 1.8;
+        }
+
+        .story-highlight {
+            background: rgba(233, 69, 96, 0.1);
+            border-left: 4px solid var(--red);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        /* Stats Section */
+        .stats {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .stat-card {
+            background: rgba(233, 69, 96, 0.1);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(233, 69, 96, 0.15);
+        }
+
+        .stat-number {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: bold;
+            color: var(--red);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--white);
+            font-size: clamp(15px, 2vw, 18px);
+            margin-bottom: 10px;
+        }
+
+        .stat-description {
+            color: var(--gray);
+            font-size: clamp(13px, 1.8vw, 15px);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--dark);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 60px;
+            color: var(--red);
+            opacity: 0.3;
+        }
+
+        .stars {
+            color: var(--warning);
+            margin-bottom: 15px;
+        }
+
+        .testimonial-text {
+            margin-bottom: 20px;
+            font-style: italic;
+            color: var(--gray);
+            font-size: clamp(14px, 1.8vw, 16px);
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--white);
+        }
+
+        .testimonial-company {
+            color: var(--gray-dark);
+            font-size: 14px;
+        }
+
+        /* Solutions */
+        .solutions {
+            background: var(--dark-blue);
         }
 
         .cards-grid {
@@ -249,6 +433,7 @@
             border-radius: 20px;
             padding: 30px;
             transition: all 0.3s;
+            position: relative;
         }
 
         .card:hover {
@@ -257,73 +442,33 @@
             border-color: var(--red);
         }
 
-        .card-badge {
-            display: inline-block;
-            background: rgba(233, 69, 96, 0.1);
-            color: var(--red);
-            padding: 5px 15px;
+        .card-result {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            padding: 8px 15px;
             border-radius: 15px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             margin-bottom: 20px;
-        }
-
-        .card-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(233, 69, 96, 0.1);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
+            display: inline-block;
         }
 
         .card h3 {
-            font-size: 24px;
+            font-size: clamp(20px, 3vw, 26px);
             margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        .card-price {
-            font-size: 32px;
+        .card-problem {
             color: var(--red);
-            font-weight: bold;
-            margin: 20px 0;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: clamp(14px, 1.8vw, 16px);
         }
 
-        .card-price span {
-            display: block;
-            font-size: 14px;
+        .card-solution {
             color: var(--gray);
-            font-weight: normal;
-        }
-
-        .price-from {
-            font-size: 14px;
-            color: var(--gray);
-            font-weight: normal;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .pricing-note {
-            background: rgba(233, 69, 96, 0.1);
-            border-left: 3px solid var(--red);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 30px 0;
-        }
-
-        .pricing-note p {
-            margin: 5px 0;
-            color: var(--gray);
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 20px;
+            font-size: clamp(14px, 1.8vw, 16px);
         }
 
         .card ul {
@@ -337,67 +482,69 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: clamp(13px, 1.8vw, 15px);
         }
 
-        /* Combos Section */
-        .combos {
-            background: var(--dark-blue);
-            padding: 80px 0;
+        .card .btn {
+            width: 100%;
+            margin-top: 15px;
         }
 
-        .combo-grid {
+        /* Process */
+        .process {
+            background: var(--dark);
+        }
+
+        .process-steps {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 30px;
+            margin-top: 50px;
         }
 
-        .combo-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 30px;
+        .process-step {
             text-align: center;
-            transition: all 0.3s;
-            position: relative;
         }
 
-        .combo-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
-        }
-
-        .combo-card.featured {
-            border-color: var(--red);
-        }
-
-        .combo-card.featured::before {
-            content: 'MAIS POPULAR';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
+        .step-number {
+            width: 60px;
+            height: 60px;
             background: var(--red);
-            padding: 5px 20px;
-            border-radius: 15px;
-            font-size: 12px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
             font-weight: bold;
+            margin: 0 auto 20px;
         }
 
-        .discount {
-            background: rgba(233, 69, 96, 0.2);
-            color: var(--red);
-            padding: 10px;
-            border-radius: 10px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            display: inline-block;
+        .process-step h3 {
+            margin-bottom: 10px;
+            font-size: clamp(17px, 2.5vw, 20px);
+        }
+
+        .process-step p {
+            color: var(--gray);
+            font-size: clamp(13px, 1.8vw, 16px);
         }
 
         /* CTA Section */
         .cta-section {
-            padding: 80px 0;
-            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+            padding: 100px 0;
+            background: linear-gradient(135deg, #0f3460 0%, #1a1a2e 100%);
             text-align: center;
+        }
+
+        .cta-urgency {
+            background: rgba(233, 69, 96, 0.2);
+            color: var(--red);
+            padding: 10px 25px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: clamp(13px, 1.8vw, 16px);
         }
 
         /* Footer */
@@ -416,6 +563,7 @@
 
         .footer-section h4 {
             margin-bottom: 20px;
+            font-size: clamp(17px, 2.5vw, 20px);
         }
 
         .footer-section ul {
@@ -427,6 +575,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: clamp(13px, 1.8vw, 15px);
         }
 
         .footer-section a {
@@ -444,6 +593,7 @@
             padding-top: 30px;
             border-top: 1px solid var(--border);
             color: var(--gray);
+            font-size: clamp(12px, 1.5vw, 14px);
         }
 
         /* Mobile Menu */
@@ -459,10 +609,28 @@
             z-index: 2000;
             transition: right 0.3s;
             padding: 30px;
+            overflow-y: auto;
         }
 
         .mobile-menu.active {
             right: 0;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mobile-menu li {
+            margin-bottom: 20px;
+        }
+
+        .mobile-menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: block;
+            padding: 10px 0;
         }
 
         .mobile-overlay {
@@ -480,7 +648,7 @@
             display: block;
         }
 
-        /* Responsivo */
+        /* Mobile Responsivo */
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
@@ -499,25 +667,46 @@
                 min-height: auto;
             }
 
-            .hero h1 {
-                font-size: 32px;
-            }
-
-            .hero p {
-                font-size: 16px;
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
             }
 
             .btn {
                 width: 100%;
-                max-width: 300px;
-                justify-content: center;
+                max-width: 280px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 30px;
+            }
+
+            .founder-image {
+                margin: 0 auto;
+            }
+
+            .trust-badges {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+
+            .pain-grid {
+                grid-template-columns: 1fr;
             }
 
             .cards-grid {
                 grid-template-columns: 1fr;
             }
 
-            .combo-grid {
+            .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-steps {
                 grid-template-columns: 1fr;
             }
 
@@ -533,23 +722,61 @@
             .footer-section li {
                 justify-content: center;
             }
+
+            section {
+                padding: 50px 0;
+            }
+
+            .container {
+                padding: 0 15px;
+            }
+        }
+
+        /* Tablet */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .testimonial-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .pain-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-menu {
+                gap: 15px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navegação -->
     <nav>
         <div class="container">
             <div class="nav-content">
-                <div class="logo">Ncodes</div>
+                <div class="logo">NCodes</div>
                 <ul class="nav-menu">
+                    <li><a href="#problema">O Problema</a></li>
+                    <li><a href="#sobre">Quem Somos</a></li>
+                    <li><a href="#resultados">Resultados</a></li>
                     <li><a href="#solucoes">Soluções</a></li>
-                    <li><a href="#combos">Combos</a></li>
-                    <li><a href="#contato">Contato</a></li>
-                    <li><a href="https://wa.me/553791326304?text=Olá! Quero falar com um consultor" class="nav-cta">Falar com Consultor</a></li>
+                    <li><a href="#processo">Como Funciona</a></li>
+                    <li><a href="https://wa.me/553791326304?text=Olá! Quero meu diagnóstico gratuito" class="nav-cta">Diagnóstico Grátis</a></li>
                 </ul>
                 <button class="menu-toggle" onclick="toggleMenu()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="icon icon-white">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
                         <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -559,504 +786,490 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu -->
     <div class="mobile-overlay" onclick="toggleMenu()"></div>
     <div class="mobile-menu">
         <div style="margin-bottom: 30px;">
-            <div class="logo">Ncodes</div>
+            <div class="logo">NCodes</div>
         </div>
-        <ul style="list-style: none;">
-            <li style="margin-bottom: 20px;"><a href="#solucoes" onclick="toggleMenu()" style="color: white; text-decoration: none; font-size: 18px;">Soluções</a></li>
-            <li style="margin-bottom: 20px;"><a href="#combos" onclick="toggleMenu()" style="color: white; text-decoration: none; font-size: 18px;">Combos</a></li>
-            <li style="margin-bottom: 20px;"><a href="#contato" onclick="toggleMenu()" style="color: white; text-decoration: none; font-size: 18px;">Contato</a></li>
+        <ul>
+            <li><a href="#problema" onclick="toggleMenu()">O Problema</a></li>
+            <li><a href="#sobre" onclick="toggleMenu()">Quem Somos</a></li>
+            <li><a href="#resultados" onclick="toggleMenu()">Resultados</a></li>
+            <li><a href="#solucoes" onclick="toggleMenu()">Soluções</a></li>
+            <li><a href="#processo" onclick="toggleMenu()">Como Funciona</a></li>
+            <li><a href="https://wa.me/553791326304?text=Olá! Quero meu diagnóstico gratuito" onclick="toggleMenu()" style="background: var(--red); padding: 15px; border-radius: 25px; text-align: center; margin-top: 20px;">Diagnóstico Gratuito</a></li>
         </ul>
     </div>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Transforme seu Negócio com <span class="gradient-text">Inteligência Artificial</span></h1>
-                <p>Automatize processos, qualifique leads e ofereça atendimento excepcional com nossas soluções inteligentes de IA.</p>
+                <h1>Seu sistema está <span class="gradient-text">travando</span> seu crescimento?</h1>
+                <p>Pare de perder vendas com processos manuais. Automatizamos sua operação em 15 dias.</p>
                 <div class="hero-buttons">
-                    <a href="https://wa.me/553791326304?text=Olá! Quero conhecer as soluções com IA" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="icon icon-white">
-                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    <a href="https://wa.me/553791326304?text=Olá! Quero automatizar meu negócio" class="btn btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M9 11H3v2h6v-2zm0-4H3v2h6V7zm0 8H3v2h6v-2zm12-8h-6v2h6V7zm0 4h-6v2h6v-2zm0 4h-6v2h6v-2z"></path>
                         </svg>
-                        Ver Soluções com Preços
+                        Diagnóstico Gratuito
                     </a>
-                    <a href="https://wa.me/553791326304?text=Olá! Preciso de um orçamento personalizado" class="btn btn-secondary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="icon icon-white">
-                            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    <a href="#resultados" class="btn btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                         </svg>
-                        Orçamento Personalizado
+                        Ver Resultados
                     </a>
+                </div>
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                        </svg>
+                        <span>+50 empresas transformadas</span>
+                    </div>
+                    <div class="trust-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span>15 dias para implementar</span>
+                    </div>
+                    <div class="trust-badge">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                        </svg>
+                        <span>Suporte completo</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats -->
-    <section class="stats">
+    <section id="problema" class="pain-points">
         <div class="container">
-            <div class="stats-grid">
-                <div>
-                    <div class="stat-number">R$ 3.200</div>
-                    <div class="stat-label">Economia Mensal Média</div>
+            <h2 class="section-title">Reconhece algum desses <span class="gradient-text">problemas</span>?</h2>
+            <p class="section-subtitle">Cada "sim" é dinheiro perdido todos os dias</p>
+            
+            <div class="pain-grid">
+                <div class="pain-card">
+                    <h3>💸 Perdendo vendas</h3>
+                    <p>Leads chegam mas você não consegue atender todos rapidamente?</p>
                 </div>
-                <div>
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Atendimento Automatizado</div>
+                <div class="pain-card">
+                    <h3>⏰ Trabalho repetitivo</h3>
+                    <p>Sua equipe gasta horas copiando dados entre sistemas?</p>
                 </div>
-                <div>
-                    <div class="stat-number">15 dias</div>
-                    <div class="stat-label">Prazo Médio de Entrega</div>
+                <div class="pain-card">
+                    <h3>📊 Sem visibilidade</h3>
+                    <p>Não sabe seus números reais e toma decisões no escuro?</p>
                 </div>
+                <div class="pain-card">
+                    <h3>🔌 Sistemas isolados</h3>
+                    <p>Cada ferramenta funciona sozinha e nada conversa?</p>
+                </div>
+                <div class="pain-card">
+                    <h3>😤 Clientes irritados</h3>
+                    <p>Demora no atendimento está afetando sua reputação?</p>
+                </div>
+                <div class="pain-card">
+                    <h3>📈 Crescimento travado</h3>
+                    <p>Quer crescer mas o sistema atual não aguenta?</p>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="#sobre" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                    Ver Como Resolvemos
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="about">
+        <div class="container">
+            <div class="about-content">
                 <div>
-                    <div class="stat-number">3x s/juros</div>
-                    <div class="stat-label">Parcelamento Disponível</div>
+                    <img src="https://a1c447345653bf343ff8d48291913333.cdn.bubble.io/f1757415698267x999496160429774300/WhatsApp%20Image%202025-09-09%20at%2007.55.40.jpeg?_gl=1*3uma87*_gcl_au*MTE5OTc0NzQxMS4xNzU2OTAzODc5*_ga*ODQ1NzA3MTQ5LjE3NDQyODk2MjE.*_ga_BFPVR2DEE2*czE3NTc0MTU2NTgkbzM3JGcxJHQxNzU3NDQ4NjAzJGozNiRsMCRoMA.." alt="João Paulo - Fundador NCodes" class="founder-image" loading="lazy">
+                </div>
+                <div class="story-content">
+                    <h2>Eu entendo sua <span class="gradient-text">frustração</span></h2>
+                    <p><strong>Oi, eu sou Rodrigo Vale.</strong> Por anos vi empresários gastando fortunas em sistemas que não funcionavam.</p>
+                    
+                    <p>Vi empresas perderem vendas porque o sistema travava. Vi equipes desmotivadas copiando dados entre planilhas. Vi decisões erradas por falta de informação.</p>
+                    
+                    <div class="story-highlight">
+                        <p><strong>"87% das empresas usam a tecnologia ERRADA para seus problemas."</strong></p>
+                    </div>
+                    
+                    <p>Por isso criei a NCodes. Não vendemos tecnologia. <strong>Vendemos tempo, vendas e paz de espírito.</strong></p>
+                    
+                    <p>Já libertamos diversas empresas do caos tecnológico. Em 15 dias, podemos fazer o mesmo por você.</p>
+                    
+                    <a href="#resultados" class="btn btn-primary">Ver Resultados Reais</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Soluções -->
+    <section id="resultados" class="stats">
+        <div class="container">
+            <h2 class="section-title">Resultados que <span class="gradient-text">falam por si</span></h2>
+            <p class="section-subtitle">Números reais de empresas como a sua</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">R$ 500k+</div>
+                    <div class="stat-label">Economizados/Mês</div>
+                    <div class="stat-description">Em automação e vendas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3.5x</div>
+                    <div class="stat-label">Mais Vendas</div>
+                    <div class="stat-description">Em apenas 90 dias</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15 dias</div>
+                    <div class="stat-label">Para Funcionar</div>
+                    <div class="stat-description">Do zero ao operacional</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Atendimento</div>
+                    <div class="stat-description">Nunca perca um lead</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">Histórias de <span class="gradient-text">transformação</span></h2>
+            <p class="section-subtitle">Eles estavam onde você está. Veja onde chegaram.</p>
+            
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"Perdíamos 30% dos leads. Em 3 meses, aumentamos vendas em 45%. O sistema se pagou no primeiro mês."</p>
+                    <div class="testimonial-author">Carlos Mendes</div>
+                    <div class="testimonial-company">CEO - TechSolutions</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"Resposta caiu de 2 horas para 30 segundos. NPS subiu 25 pontos. Clientes adoraram!"</p>
+                    <div class="testimonial-author">Ana Silva</div>
+                    <div class="testimonial-company">E-commerce Fashion</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="testimonial-text">"R$ 8.000/mês economizados! 6 horas diárias da equipe liberadas. Agora focamos em vender."</p>
+                    <div class="testimonial-author">Roberto Alves</div>
+                    <div class="testimonial-company">Consultoria Digital</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="solucoes" class="solutions">
         <div class="container">
-            <h2 class="section-title">Nossas <span class="gradient-text">Soluções</span></h2>
-            <p class="section-subtitle">Escolha a solução perfeita para transformar seu negócio</p>
-            
-            <div class="pricing-note">
-                <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
-                        <line x1="12" y1="1" x2="12" y2="23"></line>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                    </svg>
-                    <strong>Investimento inicial único + manutenção opcional</strong>
-                </p>
-                <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    Parcelamos em até 3x sem juros
-                </p>
-                <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
-                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
-                    </svg>
-                    10% de desconto para pagamento à vista
-                </p>
-                <p>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                    </svg>
-                    Condições especiais para múltiplos projetos
-                </p>
-            </div>
+            <h2 class="section-title">Escolha sua <span class="gradient-text">transformação</span></h2>
+            <p class="section-subtitle">Resolvemos em 15 dias o que te tira o sono hoje</p>
             
             <div class="cards-grid">
                 <div class="card">
-                    <div class="card-badge">ESSENCIAL</div>
-                    <div class="card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" class="icon icon-red">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                    </div>
-                    <h3>Chatbot Suporte RAG</h3>
-                    <div class="card-price">
-                        <span class="price-from">A partir de</span>
-                        R$ 2.000
-                        <span>Projeto completo</span>
-                    </div>
+                    <span class="card-result">+40% conversão</span>
+                    <h3>Chatbot 24/7</h3>
+                    <p class="card-problem">Perdendo vendas fora do horário?</p>
+                    <p class="card-solution"><strong>Solução:</strong> IA que atende, qualifica e vende enquanto você dorme.</p>
                     <ul>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            IA para perguntas frequentes
+                            Responde em segundos
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Base de conhecimento personalizada
+                            Aprende sozinho
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Transferência para humano
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Integração WhatsApp
+                            WhatsApp + Site
                         </li>
                     </ul>
-                    <p style="color: var(--gray-dark); font-size: 14px;">Manutenção: a partir de R$ 250/mês</p>
-                    <a href="https://wa.me/553791326304?text=Olá! Quero saber mais sobre o Chatbot Suporte RAG" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 15px;">Solicitar Orçamento</a>
+                    <a href="https://wa.me/553791326304?text=Quero o Chatbot 24/7" class="btn btn-primary">Quero Vender 24/7</a>
                 </div>
 
                 <div class="card">
-                    <div class="card-badge">ESSENCIAL</div>
-                    <div class="card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" class="icon icon-red">
-                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z"></path>
-                        </svg>
-                    </div>
-                    <h3>Central de Atendimentos</h3>
-                    <div class="card-price">
-                        <span class="price-from">A partir de</span>
-                        R$ 3.000
-                        <span>Projeto completo</span>
-                    </div>
+                    <span class="card-result">6h/dia livres</span>
+                    <h3>Automação Total</h3>
+                    <p class="card-problem">Equipe fazendo trabalho manual?</p>
+                    <p class="card-solution"><strong>Solução:</strong> Automatizamos tudo repetitivo. Foque no estratégico.</p>
                     <ul>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Sistema completo de atendimento
+                            Zero copiar/colar
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Até 4 atendentes simultâneos
+                            Relatórios automáticos
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Relatórios detalhados
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Gestão de filas e tickets
+                            Integração total
                         </li>
                     </ul>
-                    <p style="color: var(--gray-dark); font-size: 14px;">Manutenção: a partir de R$ 250/mês</p>
-                    <a href="https://wa.me/553791326304?text=Olá! Quero saber mais sobre a Central de Atendimentos" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 15px;">Solicitar Orçamento</a>
+                    <a href="https://wa.me/553791326304?text=Quero automatizar processos" class="btn btn-primary">Liberar Equipe</a>
                 </div>
 
                 <div class="card">
-                    <div class="card-badge">PROFISSIONAL</div>
-                    <div class="card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" class="icon icon-red">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                        </svg>
-                    </div>
-                    <h3>Chatbot Agendamento</h3>
-                    <div class="card-price">
-                        <span class="price-from">A partir de</span>
-                        R$ 3.500
-                        <span>Projeto completo</span>
-                    </div>
+                    <span class="card-result">R$ 8k/mês economia</span>
+                    <h3>Central Única</h3>
+                    <p class="card-problem">Atendimento desorganizado?</p>
+                    <p class="card-solution"><strong>Solução:</strong> Todos canais em um lugar. Métricas em tempo real.</p>
                     <ul>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Suporte RAG completo
+                            WhatsApp + Instagram
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Sistema de agendamento automatizado
+                            Distribuição inteligente
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Sincronização com calendários
+                            Dashboard completo
                         </li>
                     </ul>
-                    <p style="color: var(--gray-dark); font-size: 14px;">Manutenção: a partir de R$ 350/mês</p>
-                    <a href="https://wa.me/553791326304?text=Olá! Quero saber mais sobre o Chatbot Agendamento" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 15px;">Solicitar Orçamento</a>
+                    <a href="https://wa.me/553791326304?text=Quero a Central Única" class="btn btn-primary">Organizar Tudo</a>
                 </div>
 
                 <div class="card">
-                    <div class="card-badge">PROFISSIONAL</div>
-                    <div class="card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" class="icon icon-red">
-                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                        </svg>
-                    </div>
-                    <h3>Chatbot SDR - Qualificação</h3>
-                    <div class="card-price">
-                        <span class="price-from">A partir de</span>
-                        R$ 3.500
-                        <span>Projeto completo</span>
-                    </div>
+                    <span class="card-result">5x mais leads</span>
+                    <h3>Máquina de Vendas</h3>
+                    <p class="card-problem">Vendas estagnadas?</p>
+                    <p class="card-solution"><strong>Solução:</strong> Sistema que prospecta e vende no automático.</p>
                     <ul>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Qualificação automática de leads
+                            Prospecção 24/7
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Sistema de scoring
+                            Nutrição automática
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Integração com CRM
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Fluxos personalizados
+                            CRM integrado
                         </li>
                     </ul>
-                    <p style="color: var(--gray-dark); font-size: 14px;">Manutenção: a partir de R$ 350/mês</p>
-                    <a href="https://wa.me/553791326304?text=Olá! Quero saber mais sobre o Chatbot SDR Qualificação" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 15px;">Solicitar Orçamento</a>
+                    <a href="https://wa.me/553791326304?text=Quero multiplicar vendas" class="btn btn-primary">Escalar Vendas</a>
                 </div>
 
                 <div class="card">
-                    <div class="card-badge">PROFISSIONAL</div>
-                    <div class="card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" class="icon icon-red">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                    </div>
-                    <h3>Chatbot BDR - Prospecção</h3>
-                    <div class="card-price">
-                        <span class="price-from">A partir de</span>
-                        R$ 3.500
-                        <span>Projeto completo</span>
-                    </div>
+                    <span class="card-result">100% personalizado</span>
+                    <h3>Sob Medida</h3>
+                    <p class="card-problem">Nada pronto resolve?</p>
+                    <p class="card-solution"><strong>Solução:</strong> Criamos exatamente o que você precisa.</p>
                     <ul>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Prospecção ativa de leads
+                            Seu processo
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Sequências de engajamento
+                            Suas regras
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Enriquecimento de dados
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Relatórios de conversão
+                            Suporte vitalício
                         </li>
                     </ul>
-                    <p style="color: var(--gray-dark); font-size: 14px;">Manutenção: a partir de R$ 350/mês</p>
-                    <a href="https://wa.me/553791326304?text=Olá! Quero saber mais sobre o Chatbot BDR Prospecção" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 15px;">Solicitar Orçamento</a>
+                    <a href="https://wa.me/553791326304?text=Preciso sistema sob medida" class="btn btn-primary">Criar Sistema</a>
                 </div>
 
                 <div class="card">
-                    <div class="card-badge">PREMIUM</div>
-                    <div class="card-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" class="icon icon-red">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
-                        </svg>
-                    </div>
-                    <h3>Central Multicanais</h3>
-                    <div class="card-price">
-                        <span class="price-from">Investimento</span>
-                        R$ 7.500
-                        <span>Projeto completo</span>
-                    </div>
+                    <span class="card-result">Zero erros</span>
+                    <h3>Integração Total</h3>
+                    <p class="card-problem">Sistemas não conversam?</p>
+                    <p class="card-solution"><strong>Solução:</strong> Conectamos tudo. Dados fluem automaticamente.</p>
                     <ul>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Sistema omnichannel completo
+                            APIs conectadas
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            WhatsApp, Instagram, Email, Web
+                            Tempo real
                         </li>
                         <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e94560">
                                 <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                            Relatórios avançados
-                        </li>
-                        <li>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-red">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg>
-                            Até 4 atendentes
+                            Backup automático
                         </li>
                     </ul>
-                    <p style="color: var(--gray-dark); font-size: 14px;">Manutenção: a partir de R$ 500/mês</p>
-                    <a href="https://wa.me/553791326304?text=Olá! Quero saber mais sobre a Central Multicanais" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 15px;">Solicitar Orçamento</a>
-                    <p style="color: var(--red); font-size: 12px; margin-top: 10px;">
-                        <strong>Projetos customizados? Consulte-nos!</strong>
-                    </p>
+                    <a href="https://wa.me/553791326304?text=Quero integrar sistemas" class="btn btn-primary">Conectar Tudo</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Combos -->
-    <section id="combos" class="combos">
+    <section id="processo" class="process">
         <div class="container">
-            <h2 class="section-title">Combos <span class="gradient-text">Especiais</span></h2>
-            <p class="section-subtitle">Economize ainda mais com nossos pacotes combinados</p>
+            <h2 class="section-title">Simples e <span class="gradient-text">rápido</span></h2>
+            <p class="section-subtitle">15 dias do problema à solução funcionando</p>
             
-            <div class="combo-grid">
-                <div class="combo-card">
-                    <div class="discount">15% OFF</div>
-                    <h3>Atendimento Smart</h3>
-                    <p style="color: var(--gray); margin: 20px 0;">Chatbot Suporte + Agendamento</p>
-                    <div style="text-decoration: line-through; color: var(--gray-dark);">De: R$ 5.500</div>
-                    <div class="card-price">
-                        <span class="price-from">Por apenas</span>
-                        R$ 4.675
-                    </div>
-                    <a href="https://wa.me/553791326304?text=Olá! Tenho interesse no combo Atendimento Smart" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 20px;">Quero este combo</a>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3>Diagnóstico</h3>
+                    <p>30min no WhatsApp. Identificamos o problema e quanto você perde.</p>
                 </div>
-
-                <div class="combo-card featured">
-                    <div class="discount">15% OFF</div>
-                    <h3>Vendas Completo</h3>
-                    <p style="color: var(--gray); margin: 20px 0;">SDR Qualificação + BDR Prospecção</p>
-                    <div style="text-decoration: line-through; color: var(--gray-dark);">De: R$ 7.000</div>
-                    <div class="card-price">
-                        <span class="price-from">Por apenas</span>
-                        R$ 5.900
-                    </div>
-                    <a href="https://wa.me/553791326304?text=Olá! Tenho interesse no combo Vendas Completo" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 20px;">Quero este combo</a>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3>Proposta</h3>
+                    <p>Em 24h: solução, prazo, investimento e garantia de resultados.</p>
                 </div>
-
-                <div class="combo-card">
-                    <div class="discount">15% OFF</div>
-                    <h3>Atendimento Pro</h3>
-                    <p style="color: var(--gray); margin: 20px 0;">Central + Chatbot Suporte</p>
-                    <div style="text-decoration: line-through; color: var(--gray-dark);">De: R$ 5.000</div>
-                    <div class="card-price">
-                        <span class="price-from">Por apenas</span>
-                        R$ 4.250
-                    </div>
-                    <a href="https://wa.me/553791326304?text=Olá! Tenho interesse no combo Atendimento Pro" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 20px;">Quero este combo</a>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3>Implementação</h3>
+                    <p>15 dias. Acompanhamento diário. Sistema funcionando.</p>
                 </div>
-
-                <div class="combo-card featured">
-                    <div class="discount">20% OFF</div>
-                    <h3>Premium Full Service</h3>
-                    <p style="color: var(--gray); margin: 20px 0;">Central Multicanais + Agendamento + SDR</p>
-                    <div style="text-decoration: line-through; color: var(--gray-dark);">De: R$ 14.500</div>
-                    <div class="card-price">
-                        <span class="price-from">Por apenas</span>
-                        R$ 11.600
-                    </div>
-                    <a href="https://wa.me/553791326304?text=Olá! Tenho interesse no combo Premium Full Service" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 20px;">Quero este combo</a>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3>Resultados</h3>
+                    <p>Suporte vitalício. Se não funcionar, trabalhamos até funcionar.</p>
                 </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 40px;">
-                <p style="color: var(--gray); font-size: 14px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-gray" style="vertical-align: middle; margin-right: 5px;">
-                        <path d="M9 11H3v2h6v-2zm0-4H3v2h6V7zm0 8H3v2h6v-2zm12-8h-6v2h6V7zm0 4h-6v2h6v-2zm0 4h-6v2h6v-2z"></path>
-                    </svg>
-                    <strong>Projeto sob medida?</strong> Entre em contato para soluções customizadas
-                </p>
-                <a href="https://wa.me/553791326304?text=Olá! Preciso de um projeto sob medida" class="btn btn-secondary" style="margin-top: 20px; display: inline-flex;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="icon icon-white">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                    </svg>
-                    Falar com Consultor
-                </a>
             </div>
         </div>
     </section>
 
-    <!-- CTA -->
-    <section id="contato" class="cta-section">
+    <section class="cta-section">
         <div class="container">
-            <h2 class="section-title">Pronto para <span class="gradient-text">Automatizar</span> seu Negócio?</h2>
-            <p style="color: var(--gray); margin-bottom: 30px;">Entre em contato agora e receba uma consultoria gratuita.</p>
+            <span class="cta-urgency">⚠️ Apenas 3 vagas por mês</span>
+            <h2 class="section-title">Seu concorrente já está <span class="gradient-text">automatizando</span></h2>
+            <p style="color: var(--gray); margin-bottom: 30px; font-size: clamp(15px, 2.5vw, 20px);">
+                Cada dia parado = vendas perdidas + equipe sobrecarregada
+            </p>
+            
             <div class="hero-buttons">
-                <a href="https://wa.me/553791326304?text=Olá! Quero automatizar meu negócio" class="btn btn-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="icon icon-white">
+                <a href="https://wa.me/553791326304?text=Quero garantir minha vaga" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                         <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                     </svg>
-                    Falar no WhatsApp
+                    Garantir Minha Vaga
                 </a>
-                <a href="https://wa.me/553791326304?text=Olá! Vi o site e quero mais informações" class="btn btn-secondary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" class="icon icon-white">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                <a href="https://wa.me/553791326304?text=Quero ver demonstração" class="btn btn-secondary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
                     </svg>
-                    Solicitar Consultoria
+                    Ver Demonstração
                 </a>
             </div>
+            
+            <p style="color: var(--gray); margin-top: 30px; font-size: 14px;">
+                ✅ Diagnóstico gratuito &nbsp;&nbsp;✅ Proposta em 24h &nbsp;&nbsp;✅ Resultados garantidos
+            </p>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h2 class="gradient-text" style="font-size: 28px;">Ncodes</h2>
-                    <p style="color: var(--gray);">Transformando negócios através da inteligência artificial.</p>
+                    <h2 class="gradient-text" style="font-size: 28px;">NCodes</h2>
+                    <p style="color: var(--gray);">Automatizamos negócios em 15 dias.</p>
+                    <div style="margin-top: 20px;">
+                        <p style="color: var(--gray); font-size: 13px; line-height: 1.8;">
+                            <strong>+50 empresas</strong> automatizadas<br>
+                            <strong>R$ 500k+</strong> economizados/mês<br>
+                            <strong>100%</strong> de satisfação
+                        </p>
+                    </div>
                 </div>
                 <div class="footer-section">
                     <h4>Soluções</h4>
                     <ul>
-                        <li><a href="#solucoes">Chatbot Suporte</a></li>
-                        <li><a href="#solucoes">Central de Atendimentos</a></li>
-                        <li><a href="#solucoes">Chatbot SDR/BDR</a></li>
+                        <li><a href="#solucoes">Chatbot 24/7</a></li>
+                        <li><a href="#solucoes">Automação Total</a></li>
+                        <li><a href="#solucoes">Central Única</a></li>
+                        <li><a href="#solucoes">Máquina de Vendas</a></li>
+                        <li><a href="#solucoes">Sistema Sob Medida</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Contato</h4>
+                    <h4>Contato Direto</h4>
                     <ul>
                         <li style="color: var(--gray);">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-gray">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
                             </svg>
-                            (37) 9132-6304
+                            <a href="https://wa.me/553791326304" style="color: var(--gray);">(37) 9132-6304</a>
                         </li>
                         <li style="color: var(--gray);">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-gray">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                                 <polyline points="22,6 12,13 2,6"></polyline>
                             </svg>
-                            vale.nocode@gmail.com
+                            contato@ncodes.com.br
                         </li>
                         <li style="color: var(--gray);">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" class="icon icon-gray">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                                 <circle cx="12" cy="10" r="3"></circle>
                             </svg>
                             Pará de Minas, MG
                         </li>
                     </ul>
+                    <div style="margin-top: 20px;">
+                        <a href="https://wa.me/553791326304?text=Vim do site e quero automatizar" class="btn btn-primary" style="padding: 12px 25px;">
+                            Falar Agora
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Ncodes. Todos os direitos reservados.</p>
+                <p>&copy; 2024 NCodes. Automatize hoje, domine amanhã.</p>
             </div>
         </div>
     </footer>
