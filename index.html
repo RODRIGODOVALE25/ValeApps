@@ -1,454 +1,538 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Menu, X, CheckCircle, ArrowRight, Zap, 
-  Clock, TrendingUp, Layers, MessageSquare, 
-  BarChart3, ShieldCheck, ChevronRight, Play
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NCodes - Automatize Seu Negócio</title>
+    
+    <!-- Tailwind CSS (Estilização rápida) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React e ReactDOM (Motor da aplicação) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel (Tradutor de código React para o navegador) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-// --- Componentes de UI Reutilizáveis ---
+    <!-- Framer Motion (Animações fluidas) -->
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
 
-const Section = ({ id, className, children }) => (
-  <section id={id} className={`py-20 md:py-32 relative overflow-hidden ${className}`}>
-    {children}
-  </section>
-);
+    <style>
+        /* Configurações globais e Scrollbar customizada */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        body { 
+            background-color: #020617; 
+            color: #e2e8f0; 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; /* Previne rolagem horizontal indesejada no mobile */
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
 
-const GradientText = ({ children, className = "" }) => (
-  <span className={`bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 ${className}`}>
-    {children}
-  </span>
-);
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { motion, AnimatePresence } = window.Motion;
 
-const Button = ({ children, variant = 'primary', href, className = "", icon: Icon }) => {
-  const baseStyle = "group relative inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-bold transition-all duration-300 transform hover:-translate-y-1";
-  const variants = {
-    primary: "bg-rose-600 hover:bg-rose-500 text-white shadow-[0_0_20px_rgba(225,29,72,0.5)] hover:shadow-[0_0_30px_rgba(225,29,72,0.7)]",
-    secondary: "bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md text-white hover:border-rose-500/50",
-    outline: "border-2 border-rose-600 text-rose-500 hover:bg-rose-600 hover:text-white"
-  };
+        // --- Ícones SVG (Definição manual para garantir compatibilidade sem build) ---
+        const Icon = ({ d, className, size = 24 }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                {d.map((path, i) => <path key={i} d={path} />)}
+            </svg>
+        );
 
-  return (
-    <a href={href} className={`${baseStyle} ${variants[variant]} ${className}`}>
-      {children}
-      {Icon && <Icon size={20} className="transition-transform group-hover:translate-x-1" />}
-    </a>
-  );
-};
+        const Menu = (props) => <Icon {...props} d={["M4 6h16", "M4 12h16", "M4 18h16"]} />;
+        const X = (props) => <Icon {...props} d={["M18 6 6 18", "M6 6 18 18"]} />;
+        const CheckCircle = (props) => <Icon {...props} d={["M22 11.08V12a10 10 0 1 1-5.93-9.14", "M22 4 12 14.01l-3-3"]} />;
+        const ArrowRight = (props) => <Icon {...props} d={["M5 12h14", "M12 5l7 7-7 7"]} />;
+        const Zap = (props) => <Icon {...props} d={["M13 2 3 14h9l-1 8 10-12h-9l1-8z"]} />;
+        const Clock = (props) => <Icon {...props} d={["M12 6v6l4 2", "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z"]} />;
+        const TrendingUp = (props) => <Icon {...props} d={["m22 7-8.5 8.5-5-5L2 17.5", "M16 7h6v6"]} />;
+        const Layers = (props) => <Icon {...props} d={["m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z", "m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65", "m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"]} />;
+        const MessageSquare = (props) => <Icon {...props} d={["M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"]} />;
+        const BarChart3 = (props) => <Icon {...props} d={["M3 3v18h18", "M18 17V9", "M13 17V5", "M8 17v-3"]} />;
+        const ShieldCheck = (props) => <Icon {...props} d={["M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z", "m9 12 2 2 4-4"]} />;
+        const ChevronRight = (props) => <Icon {...props} d={["m9 18 6-6-6-6"]} />;
+        const Play = (props) => <Icon {...props} d={["M5 3l14 9-14 9V3z"]} />;
 
-const Card = ({ children, className = "", delay = 0 }) => (
-  <motion.div 
-    initial={{ opacity: 0, y: 30 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-50px" }}
-    transition={{ duration: 0.5, delay }}
-    className={`bg-slate-900/50 backdrop-blur-xl border border-white/10 p-8 rounded-3xl hover:border-rose-500/30 hover:bg-slate-800/50 transition-colors duration-300 ${className}`}
-  >
-    {children}
-  </motion.div>
-);
+        // --- Componentes de Layout e UI ---
 
-// --- Componente Principal ---
+        const Section = ({ id, className, children }) => (
+            // Aumentei o padding vertical (py) para dar mais respiro
+            <section id={id} className={`py-24 md:py-32 relative overflow-hidden ${className || ''}`}>
+                {children}
+            </section>
+        );
 
-export default function NCodesLanding() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+        const GradientText = ({ children, className = "" }) => (
+            <span className={`bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 ${className}`}>
+                {children}
+            </span>
+        );
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+        const Button = ({ children, variant = 'primary', href, className = "", icon: IconComponent }) => {
+            const baseStyle = "group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-full font-bold text-base transition-all duration-300 transform hover:-translate-y-1 no-underline tracking-wide";
+            const variants = {
+                primary: "bg-rose-600 hover:bg-rose-500 text-white shadow-[0_0_20px_rgba(225,29,72,0.4)] hover:shadow-[0_0_30px_rgba(225,29,72,0.6)]",
+                secondary: "bg-white/5 hover:bg-white/10 border border-white/10 backdrop-blur-md text-white hover:border-rose-500/50",
+            };
 
-  const navLinks = [
-    { name: "O Problema", href: "#problema" },
-    { name: "Quem Somos", href: "#sobre" },
-    { name: "Resultados", href: "#resultados" },
-    { name: "Soluções", href: "#solucoes" },
-    { name: "Como Funciona", href: "#processo" },
-  ];
-
-  return (
-    <div className="min-h-screen bg-slate-950 text-slate-50 selection:bg-rose-500/30 font-sans">
-      
-      {/* Background Glow Effects */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-rose-600/20 rounded-full blur-[120px] opacity-50 animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[120px] opacity-50" />
-      </div>
-
-      {/* Navbar */}
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-slate-950/80 backdrop-blur-md py-4 border-b border-white/5' : 'py-6 bg-transparent'}`}>
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="text-2xl font-bold tracking-tighter">
-            N<span className="text-rose-500">Codes</span>
-          </div>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map(link => (
-              <a key={link.name} href={link.href} className="text-sm font-medium text-slate-300 hover:text-white transition-colors">
-                {link.name}
-              </a>
-            ))}
-            <Button href="https://wa.me/5531975285780" className="!px-6 !py-2 !text-sm">
-              Diagnóstico Grátis
-            </Button>
-          </div>
-
-          {/* Mobile Toggle */}
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden p-2 text-slate-300">
-            {mobileMenuOpen ? <X /> : <Menu />}
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div 
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            className="fixed inset-0 z-40 bg-slate-950/95 backdrop-blur-xl pt-24 px-6 md:hidden"
-          >
-            <div className="flex flex-col gap-6 text-center">
-              {navLinks.map(link => (
-                <a 
-                  key={link.name} 
-                  href={link.href} 
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-2xl font-semibold text-slate-200"
-                >
-                  {link.name}
+            return (
+                <a href={href} className={`${baseStyle} ${variants[variant]} ${className}`}>
+                    {children}
+                    {IconComponent && <IconComponent size={18} className="transition-transform group-hover:translate-x-1" />}
                 </a>
-              ))}
-              <Button href="https://wa.me/5531975285780" className="mt-4">Diagnóstico Grátis</Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            );
+        };
 
-      {/* Hero Section */}
-      <Section className="min-h-screen flex items-center pt-32">
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              <span className="inline-block py-1 px-3 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm font-medium mb-6">
-                🚀 Automatize seu negócio em 15 dias
-              </span>
-              <h1 className="text-5xl md:text-7xl font-extrabold leading-tight mb-8 tracking-tight">
-                Seu sistema está <br className="hidden md:block"/>
-                <GradientText>travando seu crescimento?</GradientText>
-              </h1>
-              <p className="text-lg md:text-xl text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-                Pare de perder vendas com processos manuais e planilhas. Nós criamos ecossistemas digitais que trabalham enquanto você dorme.
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Button href="https://wa.me/5531975285780" variant="primary" icon={Zap}>
-                  Diagnóstico Gratuito
-                </Button>
-                <Button href="#resultados" variant="secondary" icon={Play}>
-                  Ver Resultados
-                </Button>
-              </div>
-            </motion.div>
-
-            {/* Trust Badges */}
+        const Card = ({ children, className = "", delay = 0 }) => (
             <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 1 }}
-              className="mt-16 pt-8 border-t border-white/5 flex flex-wrap justify-center gap-8 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay }}
+                // Aumentei o padding interno (p-8 md:p-10) para o texto não colar nas bordas
+                className={`bg-slate-900/50 backdrop-blur-xl border border-white/10 p-8 md:p-10 rounded-3xl hover:border-rose-500/30 hover:bg-slate-800/50 transition-colors duration-300 ${className}`}
             >
-              {[
-                { icon: CheckCircle, text: "Garantia de Resultado" },
-                { icon: Clock, text: "Implementação Rápida" },
-                { icon: ShieldCheck, text: "Suporte Vitalício" }
-              ].map((badge, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-slate-400">
-                  <badge.icon className="text-rose-500" size={18} />
-                  <span className="text-sm font-medium">{badge.text}</span>
-                </div>
-              ))}
+                {children}
             </motion.div>
-          </div>
-        </div>
-      </Section>
+        );
 
-      {/* Pain Points Section */}
-      <Section id="problema" className="bg-slate-900/30">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Reconhece algum desses <GradientText>pesadelos?</GradientText></h2>
-            <p className="text-slate-400">Cada "sim" é dinheiro saindo do seu bolso.</p>
-          </div>
+        // --- Aplicação Principal ---
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { icon: TrendingUp, title: "Perdendo Vendas", desc: "Leads chegam mas você não consegue atender todos rapidamente?" },
-              { icon: Layers, title: "Trabalho Manual", desc: "Sua equipe gasta horas copiando dados entre planilhas e sistemas?" },
-              { icon: BarChart3, title: "Sem Visibilidade", desc: "Toma decisões no escuro sem saber seus números reais?" },
-              { icon: Zap, title: "Sistemas Isolados", desc: "Cada ferramenta funciona sozinha e nada conversa entre si?" },
-              { icon: MessageSquare, title: "Clientes Irritados", desc: "Demora no atendimento está queimando sua reputação?" },
-              { icon: ShieldCheck, title: "Crescimento Travado", desc: "Quer escalar mas o operacional atual não aguenta?" },
-            ].map((item, idx) => (
-              <Card key={idx} delay={idx * 0.1} className="group">
-                <div className="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center text-rose-500 mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <item.icon size={24} />
+        function NCodesLanding() {
+            const [isScrolled, setIsScrolled] = useState(false);
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setIsScrolled(window.scrollY > 50);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const navLinks = [
+                { name: "O Problema", href: "#problema" },
+                { name: "Quem Somos", href: "#sobre" },
+                { name: "Resultados", href: "#resultados" },
+                { name: "Soluções", href: "#solucoes" },
+                { name: "Como Funciona", href: "#processo" },
+            ];
+
+            return (
+                <div className="min-h-screen bg-slate-950 text-slate-50 selection:bg-rose-500/30 font-sans">
+                
+                {/* Background Glow Effects */}
+                <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+                    <div className="absolute top-[-10%] left-[-10%] w-[500px] md:w-[600px] h-[500px] md:h-[600px] bg-rose-600/10 rounded-full blur-[120px] opacity-40 animate-pulse" />
+                    <div className="absolute bottom-[-10%] right-[-10%] w-[600px] md:w-[700px] h-[600px] md:h-[700px] bg-indigo-600/10 rounded-full blur-[120px] opacity-40" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{item.desc}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </Section>
 
-      {/* About/Story Section */}
-      <Section id="sobre">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <motion.div 
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="absolute inset-0 bg-rose-500 rounded-3xl blur-2xl opacity-20 transform rotate-6"></div>
-              <img 
-                src="https://a1c447345653bf343ff8d48291913333.cdn.bubble.io/f1757415698267x999496160429774300/WhatsApp%20Image%202025-09-09%20at%2007.55.40.jpeg?_gl=1*3uma87*_gcl_au*MTE5OTc0NzQxMS4xNzU2OTAzODc5*_ga*ODQ1NzA3MTQ5LjE3NDQyODk2MjE.*_ga_BFPVR2DEE2*czE3NTc0MTU2NTgkbzM3JGcxJHQxNzU3NDQ4NjAzJGozNiRsMCRoMA.." 
-                alt="Rodrigo Vale" 
-                className="relative rounded-3xl w-full shadow-2xl border border-white/10"
-              />
-              <div className="absolute -bottom-6 -right-6 bg-slate-800 p-6 rounded-2xl border border-white/10 shadow-xl max-w-xs hidden md:block">
-                <p className="text-rose-400 font-bold text-lg">"Não vendemos tecnologia. Vendemos tempo."</p>
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl md:text-5xl font-bold mb-6">Entendo sua <GradientText>frustração</GradientText></h2>
-              <div className="space-y-6 text-slate-300 text-lg leading-relaxed">
-                <p>
-                  <strong>Oi, eu sou Rodrigo Vale.</strong> Por anos vi empresários brilhantes enterrados em burocracia, usando sistemas caros que não resolviam nada.
-                </p>
-                <div className="pl-6 border-l-4 border-rose-500 bg-rose-500/5 py-4 pr-4 rounded-r-lg">
-                  <p className="italic text-white font-medium">"87% das empresas usam a tecnologia ERRADA para seus problemas."</p>
+                {/* Navbar */}
+                <nav className={`fixed top-0 w-full z-50 transition-all duration-500 border-b ${isScrolled ? 'bg-slate-950/90 backdrop-blur-xl py-4 border-white/5' : 'py-6 border-transparent bg-transparent'}`}>
+                    <div className="container mx-auto px-6 lg:px-12 flex justify-between items-center">
+                        <div className="text-2xl font-extrabold tracking-tighter cursor-pointer select-none">
+                            N<span className="text-rose-500">Codes</span>
+                        </div>
+
+                        {/* Desktop Menu */}
+                        <div className="hidden md:flex items-center gap-10">
+                            {navLinks.map(link => (
+                            <a key={link.name} href={link.href} className="text-sm font-medium text-slate-300 hover:text-white transition-colors tracking-wide">
+                                {link.name}
+                            </a>
+                            ))}
+                            <Button href="https://wa.me/5531975285780" className="!px-6 !py-2.5 !text-sm shadow-none border border-rose-600/50">
+                            Diagnóstico Grátis
+                            </Button>
+                        </div>
+
+                        {/* Mobile Toggle */}
+                        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-colors">
+                            {mobileMenuOpen ? <X /> : <Menu />}
+                        </button>
+                    </div>
+                </nav>
+
+                {/* Mobile Menu Overlay */}
+                <AnimatePresence>
+                    {mobileMenuOpen && (
+                    <motion.div 
+                        initial={{ opacity: 0, x: '100%' }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: '100%' }}
+                        transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+                        className="fixed inset-0 z-40 bg-slate-950 pt-28 px-8 md:hidden flex flex-col h-screen overflow-y-auto"
+                    >
+                        <div className="flex flex-col gap-8 text-center">
+                            {navLinks.map(link => (
+                                <a 
+                                key={link.name} 
+                                href={link.href} 
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="text-2xl font-semibold text-slate-200 hover:text-rose-500 transition-colors py-2 border-b border-white/5"
+                                >
+                                {link.name}
+                                </a>
+                            ))}
+                            <div className="pt-6 flex justify-center pb-10">
+                                <Button href="https://wa.me/5531975285780" className="w-full max-w-xs">Diagnóstico Grátis</Button>
+                            </div>
+                        </div>
+                    </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {/* Hero Section */}
+                <Section className="min-h-screen flex items-center pt-32 md:pt-40 pb-20">
+                    <div className="container mx-auto px-6 lg:px-12 relative z-10">
+                        <div className="max-w-5xl mx-auto text-center">
+                            <motion.div
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, ease: "easeOut" }}
+                            >
+                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm font-semibold mb-8">
+                                    <span className="relative flex h-2 w-2">
+                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                                      <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                                    </span>
+                                    Automatize seu negócio em 15 dias
+                                </div>
+                                
+                                {/* Ajustei o tamanho da fonte no mobile para não quebrar palavras (text-4xl) */}
+                                <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-[1.1] mb-8 tracking-tight text-white">
+                                    Seu sistema está <br className="hidden md:block"/>
+                                    <GradientText>travando seu crescimento?</GradientText>
+                                </h1>
+                                
+                                <p className="text-lg md:text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed font-normal">
+                                    Pare de perder vendas com processos manuais e planilhas. Nós criamos ecossistemas digitais que trabalham enquanto você dorme.
+                                </p>
+                                
+                                <div className="flex flex-col sm:flex-row justify-center gap-5">
+                                    <Button href="https://wa.me/5531975285780" variant="primary" icon={Zap}>
+                                        Diagnóstico Gratuito
+                                    </Button>
+                                    <Button href="#resultados" variant="secondary" icon={Play}>
+                                        Ver Resultados
+                                    </Button>
+                                </div>
+                            </motion.div>
+
+                            {/* Trust Badges */}
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.6, duration: 1 }}
+                                className="mt-20 pt-10 border-t border-white/5 flex flex-wrap justify-center gap-x-12 gap-y-6"
+                            >
+                                {[
+                                    { icon: CheckCircle, text: "Garantia de Resultado" },
+                                    { icon: Clock, text: "Implementação Rápida" },
+                                    { icon: ShieldCheck, text: "Suporte Vitalício" }
+                                ].map((badge, idx) => (
+                                    <div key={idx} className="flex items-center gap-3 text-slate-400 group hover:text-slate-200 transition-colors cursor-default">
+                                        <badge.icon className="text-rose-500 group-hover:scale-110 transition-transform" size={20} />
+                                        <span className="text-sm font-medium tracking-wide">{badge.text}</span>
+                                    </div>
+                                ))}
+                            </motion.div>
+                        </div>
+                    </div>
+                </Section>
+
+                {/* Pain Points Section */}
+                <Section id="problema" className="bg-slate-900/30 border-y border-white/5">
+                    <div className="container mx-auto px-6 lg:px-12">
+                        <div className="text-center mb-20 max-w-3xl mx-auto">
+                            <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">Reconhece algum desses <GradientText>pesadelos?</GradientText></h2>
+                            <p className="text-slate-400 text-lg leading-relaxed">Cada "sim" é dinheiro saindo do seu bolso todos os dias por ineficiência.</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {[
+                                { icon: TrendingUp, title: "Perdendo Vendas", desc: "Leads chegam mas você não consegue atender todos rapidamente?" },
+                                { icon: Layers, title: "Trabalho Manual", desc: "Sua equipe gasta horas copiando dados entre planilhas e sistemas?" },
+                                { icon: BarChart3, title: "Sem Visibilidade", desc: "Toma decisões no escuro sem saber seus números reais de conversão?" },
+                                { icon: Zap, title: "Sistemas Isolados", desc: "Cada ferramenta funciona sozinha e nada conversa entre si?" },
+                                { icon: MessageSquare, title: "Clientes Irritados", desc: "A demora no atendimento está queimando sua reputação online?" },
+                                { icon: ShieldCheck, title: "Crescimento Travado", desc: "Quer escalar mas o operacional atual não aguenta mais demanda?" },
+                            ].map((item, idx) => (
+                                <Card key={idx} delay={idx * 0.1} className="group h-full flex flex-col">
+                                    <div className="w-14 h-14 bg-rose-500/10 rounded-2xl flex items-center justify-center text-rose-500 mb-8 group-hover:scale-110 transition-transform duration-300 border border-rose-500/10">
+                                        <item.icon size={28} />
+                                    </div>
+                                    <h3 className="text-xl font-bold mb-4 text-slate-100">{item.title}</h3>
+                                    <p className="text-slate-400 text-base leading-relaxed">{item.desc}</p>
+                                </Card>
+                            ))}
+                        </div>
+                    </div>
+                </Section>
+
+                {/* About Section */}
+                <Section id="sobre">
+                    <div className="container mx-auto px-6 lg:px-12">
+                        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+                            <motion.div 
+                                initial={{ opacity: 0, x: -30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                className="relative order-2 lg:order-1"
+                            >
+                                <div className="absolute inset-0 bg-rose-500 rounded-3xl blur-3xl opacity-20 transform -rotate-3 scale-105"></div>
+                                <img 
+                                    src="https://a1c447345653bf343ff8d48291913333.cdn.bubble.io/f1757415698267x999496160429774300/WhatsApp%20Image%202025-09-09%20at%2007.55.40.jpeg?_gl=1*3uma87*_gcl_au*MTE5OTc0NzQxMS4xNzU2OTAzODc5*_ga*ODQ1NzA3MTQ5LjE3NDQyODk2MjE.*_ga_BFPVR2DEE2*czE3NTc0MTU2NTgkbzM3JGcxJHQxNzU3NDQ4NjAzJGozNiRsMCRoMA.." 
+                                    alt="Rodrigo Vale" 
+                                    className="relative rounded-2xl w-full shadow-2xl border border-white/10 grayscale hover:grayscale-0 transition-all duration-700"
+                                />
+                                <div className="absolute -bottom-8 -right-8 bg-slate-900/90 backdrop-blur p-6 rounded-2xl border border-white/10 shadow-2xl max-w-xs hidden md:block transform hover:scale-105 transition-transform">
+                                    <p className="text-rose-400 font-bold text-lg mb-1">"Não vendemos software."</p>
+                                    <p className="text-slate-400 text-sm">Vendemos tempo e escala.</p>
+                                </div>
+                            </motion.div>
+                            
+                            <motion.div
+                                initial={{ opacity: 0, x: 30 }}
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true }}
+                                className="order-1 lg:order-2"
+                            >
+                                <h2 className="text-3xl md:text-5xl font-bold mb-8 leading-tight">Eu entendo sua <GradientText>frustração</GradientText></h2>
+                                <div className="space-y-6 text-slate-300 text-lg leading-relaxed">
+                                    <p>
+                                        <strong>Oi, eu sou Rodrigo Vale.</strong> Por anos vi empresários brilhantes enterrados em burocracia, pagando caro em sistemas complexos que ninguém da equipe sabia usar.
+                                    </p>
+                                    <div className="pl-6 border-l-4 border-rose-500 bg-rose-500/5 py-6 pr-6 rounded-r-xl my-8">
+                                        <p className="italic text-slate-200 font-medium text-xl">"87% das empresas usam a tecnologia ERRADA para seus problemas."</p>
+                                    </div>
+                                    <p>
+                                        Por isso criei a NCodes. Nós não entregamos um login e senha e sumimos. Nós desenhamos o processo, automatizamos o chato e deixamos sua equipe livre para vender.
+                                    </p>
+                                    <div className="pt-8">
+                                        <a href="#resultados" className="group text-rose-400 hover:text-rose-300 font-bold inline-flex items-center gap-2 transition-all text-lg">
+                                            Ver resultados reais 
+                                            <ArrowRight size={20} className="group-hover:translate-x-2 transition-transform"/>
+                                        </a>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </div>
+                    </div>
+                </Section>
+
+                {/* Stats Section */}
+                <Section id="resultados" className="bg-slate-900/50 border-y border-white/5">
+                    <div className="container mx-auto px-6 lg:px-12">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 lg:gap-16">
+                            {[
+                                { number: "R$ 500k+", label: "Economia Mensal", desc: "Gerada para clientes" },
+                                { number: "3.5x", label: "Mais Vendas", desc: "Em média nos primeiros 90 dias" },
+                                { number: "15 dias", label: "Implementação", desc: "Do zero ao operacional" },
+                                { number: "24/7", label: "Atendimento", desc: "Sem pausas ou feriados" }
+                            ].map((stat, idx) => (
+                                <div key={idx} className="text-center group">
+                                    <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-3 group-hover:text-rose-500 transition-colors tracking-tight">{stat.number}</h3>
+                                    <p className="text-lg font-bold text-slate-200 mb-2">{stat.label}</p>
+                                    <p className="text-sm text-slate-500 leading-relaxed">{stat.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </Section>
+
+                {/* Solutions Section */}
+                <Section id="solucoes">
+                    <div className="container mx-auto px-6 lg:px-12">
+                        <div className="text-center mb-24 max-w-3xl mx-auto">
+                            <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">Escolha sua <GradientText>transformação</GradientText></h2>
+                            <p className="text-slate-400 text-lg">Resolvemos em 15 dias o que tira o seu sono hoje.</p>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
+                            {[
+                                {
+                                    tag: "+40% conversão",
+                                    title: "Chatbot Inteligente 24/7",
+                                    problem: "Perdendo vendas fora do horário comercial?",
+                                    solution: "IA que atende, qualifica e vende enquanto você dorme.",
+                                    features: ["Responde em segundos", "Aprende com o tempo", "Integra WhatsApp + Site"],
+                                    link: "Chatbot 24/7"
+                                },
+                                {
+                                    tag: "6h/dia livres",
+                                    title: "Automação Operacional",
+                                    problem: "Equipe presa em trabalho manual e repetitivo?",
+                                    solution: "Automatizamos o 'copiar e colar'. Foque no estratégico.",
+                                    features: ["Zero erros manuais", "Relatórios automáticos", "Conexão entre sistemas"],
+                                    link: "Automação"
+                                },
+                                {
+                                    tag: "R$ 8k/mês economia",
+                                    title: "Central de Atendimento",
+                                    problem: "Atendimento desorganizado em vários celulares?",
+                                    solution: "Todos os canais (Whats, Insta) em uma tela só.",
+                                    features: ["Múltiplos atendentes", "Distribuição de leads", "Dashboard de performance"],
+                                    link: "Central Única"
+                                },
+                                {
+                                    tag: "5x mais leads",
+                                    title: "Máquina de Vendas (CRM)",
+                                    problem: "Vendas estagnadas e sem follow-up?",
+                                    solution: "Sistema que prospecta e faz o acompanhamento automático.",
+                                    features: ["Prospecção ativa", "Nutrição de leads", "CRM visual integrado"],
+                                    link: "Escalar Vendas"
+                                }
+                            ].map((card, idx) => (
+                                <Card key={idx} className="relative flex flex-col h-full border-white/5 hover:border-rose-500/40 group !p-8 md:!p-12">
+                                    <div className="absolute top-8 right-8 bg-emerald-500/10 text-emerald-400 px-4 py-1.5 rounded-full text-xs font-bold border border-emerald-500/20 uppercase tracking-wide">
+                                        {card.tag}
+                                    </div>
+                                    <h3 className="text-2xl md:text-3xl font-bold mb-4 group-hover:text-rose-400 transition-colors">{card.title}</h3>
+                                    <div className="mb-8 space-y-3">
+                                        <p className="text-rose-400 text-sm font-semibold uppercase tracking-wide">Problema:</p>
+                                        <p className="text-slate-300 text-base leading-relaxed">{card.problem}</p>
+                                        <p className="text-emerald-400 text-sm font-semibold uppercase tracking-wide pt-2">Solução:</p>
+                                        <p className="text-slate-300 text-base leading-relaxed">{card.solution}</p>
+                                    </div>
+                                    <ul className="space-y-4 mb-10 flex-grow border-t border-white/5 pt-6">
+                                        {card.features.map((feat, i) => (
+                                            <li key={i} className="flex items-center gap-3 text-sm text-slate-400">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-rose-500 flex-shrink-0" />
+                                                {feat}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <Button href={`https://wa.me/5531975285780?text=Tenho interesse em ${card.link}`} variant="secondary" className="w-full !justify-between group-hover:!bg-rose-600 group-hover:!border-rose-600 group-hover:text-white !px-6">
+                                        Quero esse resultado <ChevronRight size={18} />
+                                    </Button>
+                                </Card>
+                            ))}
+                        </div>
+                    </div>
+                </Section>
+
+                {/* Process Section */}
+                <Section id="processo" className="bg-slate-900/30">
+                    <div className="container mx-auto px-6 lg:px-12">
+                        <div className="text-center mb-20">
+                            <h2 className="text-3xl md:text-4xl font-bold">Como funciona?</h2>
+                            <p className="text-slate-400 mt-4 text-lg">Simples, rápido e transparente.</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
+                            {/* Linha conectora (Desktop) */}
+                            <div className="hidden md:block absolute top-8 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-rose-500/20 to-transparent"></div>
+
+                            {[
+                                { step: "01", title: "Diagnóstico", desc: "30min no WhatsApp. Entendemos onde você perde dinheiro hoje." },
+                                { step: "02", title: "Proposta", desc: "Em 24h enviamos a solução exata com prazo fixo e garantia." },
+                                { step: "03", title: "Implementação", desc: "15 dias de construção. Você acompanha tudo em tempo real." },
+                                { step: "04", title: "Liberdade", desc: "Entrega final + treinamento da equipe. Sua empresa rodando sozinha." }
+                            ].map((item, idx) => (
+                                <div key={idx} className="relative pt-8 text-center md:text-left group">
+                                    <div className="w-16 h-16 mx-auto md:mx-0 bg-slate-950 border border-rose-500/50 text-rose-500 rounded-2xl flex items-center justify-center text-xl font-bold mb-6 relative z-10 shadow-[0_0_30px_rgba(225,29,72,0.15)] group-hover:scale-110 transition-transform duration-300">
+                                        {item.step}
+                                    </div>
+                                    <h3 className="text-xl font-bold mb-3 text-white">{item.title}</h3>
+                                    <p className="text-base text-slate-400 leading-relaxed">{item.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </Section>
+
+                {/* CTA Section */}
+                <Section className="text-center !py-40 bg-gradient-to-b from-transparent to-rose-900/5">
+                    <div className="container mx-auto px-6 lg:px-12 relative z-10">
+                        <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm font-bold mb-10 animate-pulse">
+                            ⚠️ Apenas 3 vagas disponíveis este mês
+                        </div>
+                        <h2 className="text-4xl md:text-6xl lg:text-7xl font-black mb-8 leading-tight tracking-tight">
+                            Seu concorrente já está <br/>
+                            <span className="text-rose-500">automatizando.</span>
+                        </h2>
+                        <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+                            Cada dia parado é dinheiro deixado na mesa. Garanta sua vaga e pare de ser refém do operacional.
+                        </p>
+                        <div className="flex flex-col sm:flex-row justify-center gap-6">
+                            <Button href="https://wa.me/5531975285780?text=Quero garantir minha vaga" className="!text-lg !px-12 !py-5 shadow-rose-500/25">
+                                Garantir Minha Vaga
+                            </Button>
+                        </div>
+                        <p className="mt-10 text-sm text-slate-500 font-medium tracking-wide uppercase opacity-70">
+                            ✅ Diagnóstico gratuito &nbsp;&nbsp;•&nbsp;&nbsp; ✅ Proposta em 24h &nbsp;&nbsp;•&nbsp;&nbsp; ✅ Resultados garantidos
+                        </p>
+                    </div>
+                </Section>
+
+                {/* Footer */}
+                <footer className="bg-slate-950 border-t border-white/10 pt-24 pb-12">
+                    <div className="container mx-auto px-6 lg:px-12">
+                        <div className="grid md:grid-cols-4 gap-16 mb-20">
+                            <div className="col-span-1 md:col-span-2">
+                                <div className="text-3xl font-black mb-6 tracking-tighter">N<span className="text-rose-500">Codes</span></div>
+                                <p className="text-slate-400 max-w-sm mb-8 leading-relaxed">
+                                    Transformamos negócios caóticos em máquinas de vendas eficientes através de automação, processos e inteligência artificial.
+                                </p>
+                                <div className="flex gap-4">
+                                    <a href="https://wa.me/5531975285780" className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center hover:bg-rose-600 hover:text-white transition-all cursor-pointer text-slate-400 border border-white/5 hover:border-rose-500">
+                                        <MessageSquare size={22} />
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 className="font-bold text-lg mb-8 text-white">Soluções</h4>
+                                <ul className="space-y-4 text-slate-400 text-sm font-medium">
+                                    <li><a href="#solucoes" className="hover:text-rose-500 transition-colors block py-1">Chatbot 24/7</a></li>
+                                    <li><a href="#solucoes" className="hover:text-rose-500 transition-colors block py-1">Automação Total</a></li>
+                                    <li><a href="#solucoes" className="hover:text-rose-500 transition-colors block py-1">Central de Atendimento</a></li>
+                                    <li><a href="#solucoes" className="hover:text-rose-500 transition-colors block py-1">CRM & Vendas</a></li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 className="font-bold text-lg mb-8 text-white">Contato</h4>
+                                <ul className="space-y-5 text-slate-400 text-sm font-medium">
+                                    <li className="flex items-center gap-3 group">
+                                        <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                                        <a href="https://wa.me/5531975285780" className="group-hover:text-white transition-colors">(31) 97528-5780</a>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <div className="w-2 h-2 rounded-full bg-slate-700"></div>
+                                        <span>vale.nocode@gmail.com</span>
+                                    </li>
+                                    <li className="flex items-center gap-3">
+                                        <div className="w-2 h-2 rounded-full bg-slate-700"></div>
+                                        <span>Pará de Minas, MG</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-600 text-sm font-medium">
+                            <p>&copy; 2024 NCodes. Automatize hoje, domine amanhã.</p>
+                            <div className="flex gap-8 mt-6 md:mt-0">
+                                <span className="cursor-pointer hover:text-slate-400 transition-colors">Termos de Uso</span>
+                                <span className="cursor-pointer hover:text-slate-400 transition-colors">Privacidade</span>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
                 </div>
-                <p>
-                  Por isso criei a NCodes. Libertamos empresas do caos tecnológico. Em 15 dias, transformamos sua operação em uma máquina de vendas eficiente.
-                </p>
-                <div className="pt-4">
-                  <a href="#resultados" className="text-rose-400 hover:text-rose-300 font-bold inline-flex items-center gap-2 hover:gap-4 transition-all">
-                    Ver resultados reais <ArrowRight size={18} />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </Section>
+            );
+        }
 
-      {/* Stats Section */}
-      <Section id="resultados" className="bg-slate-900/50 border-y border-white/5">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { number: "R$ 500k+", label: "Economia Mensal", desc: "Em automação" },
-              { number: "3.5x", label: "Mais Vendas", desc: "Em 90 dias" },
-              { number: "15 dias", label: "Implementação", desc: "Do zero ao fim" },
-              { number: "24/7", label: "Atendimento", desc: "Sem pausas" }
-            ].map((stat, idx) => (
-              <div key={idx} className="text-center group">
-                <h3 className="text-4xl md:text-5xl font-black text-white mb-2 group-hover:text-rose-500 transition-colors">{stat.number}</h3>
-                <p className="text-lg font-bold text-slate-200">{stat.label}</p>
-                <p className="text-sm text-slate-500">{stat.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* Solutions Section */}
-      <Section id="solucoes">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-20">
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">Escolha sua <GradientText>transformação</GradientText></h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">Resolvemos em 15 dias o que tira o seu sono hoje.</p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                tag: "+40% conversão",
-                title: "Chatbot Inteligente 24/7",
-                problem: "Perdendo vendas fora do horário?",
-                solution: "IA que atende, qualifica e vende enquanto você dorme.",
-                features: ["Responde em segundos", "Aprende sozinho", "WhatsApp + Site"],
-                link: "Chatbot 24/7"
-              },
-              {
-                tag: "6h/dia livres",
-                title: "Automação Total",
-                problem: "Equipe presa em trabalho manual?",
-                solution: "Automatizamos tudo o que é repetitivo. Foque no estratégico.",
-                features: ["Zero copiar/colar", "Relatórios automáticos", "Integração total"],
-                link: "Automação"
-              },
-              {
-                tag: "R$ 8k/mês economia",
-                title: "Central Única",
-                problem: "Atendimento desorganizado?",
-                solution: "Todos os canais em um lugar só. Métricas em tempo real.",
-                features: ["WhatsApp + Insta", "Distribuição inteligente", "Dashboard completo"],
-                link: "Central Única"
-              },
-              {
-                tag: "5x mais leads",
-                title: "Máquina de Vendas",
-                problem: "Vendas estagnadas?",
-                solution: "Sistema que prospecta e faz o follow-up no automático.",
-                features: ["Prospecção 24/7", "Nutrição automática", "CRM integrado"],
-                link: "Escalar Vendas"
-              }
-            ].map((card, idx) => (
-              <Card key={idx} className="relative flex flex-col h-full border-white/5 hover:border-rose-500/40 group">
-                <div className="absolute top-6 right-6 bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full text-xs font-bold border border-emerald-500/20">
-                  {card.tag}
-                </div>
-                <h3 className="text-2xl font-bold mb-2 group-hover:text-rose-400 transition-colors">{card.title}</h3>
-                <div className="mb-6">
-                  <p className="text-rose-400 text-sm font-medium mb-1">{card.problem}</p>
-                  <p className="text-slate-300 text-sm">{card.solution}</p>
-                </div>
-                <ul className="space-y-3 mb-8 flex-grow">
-                  {card.features.map((feat, i) => (
-                    <li key={i} className="flex items-center gap-3 text-sm text-slate-400">
-                      <div className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                      {feat}
-                    </li>
-                  ))}
-                </ul>
-                <Button href={`https://wa.me/5531975285780?text=Tenho interesse em ${card.link}`} variant="secondary" className="w-full !justify-between group-hover:!bg-rose-600 group-hover:!border-rose-600 group-hover:text-white">
-                  Quero esse resultado <ChevronRight size={16} />
-                </Button>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* Process Section */}
-      <Section id="processo" className="bg-slate-900/30">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold">Como funciona?</h2>
-            <p className="text-slate-400 mt-4">Simples, rápido e sem tecniquês.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-            {/* Line connecting steps (Desktop only) */}
-            <div className="hidden md:block absolute top-8 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-rose-500/30 to-transparent"></div>
-
-            {[
-              { step: "01", title: "Diagnóstico", desc: "30min no WhatsApp. Entendemos onde você perde dinheiro." },
-              { step: "02", title: "Proposta", desc: "Em 24h: solução exata, prazo e garantia." },
-              { step: "03", title: "Implementação", desc: "15 dias de construção. Você acompanha tudo." },
-              { step: "04", title: "Liberdade", desc: "Entrega final + treinamento. Sua empresa rodando sozinha." }
-            ].map((item, idx) => (
-              <div key={idx} className="relative pt-8 text-center md:text-left">
-                <div className="w-16 h-16 mx-auto md:mx-0 bg-slate-900 border border-rose-500 text-rose-500 rounded-2xl flex items-center justify-center text-xl font-bold mb-6 relative z-10 shadow-[0_0_20px_rgba(225,29,72,0.2)]">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                <p className="text-sm text-slate-400">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-
-      {/* CTA Section */}
-      <Section className="text-center !py-32">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-rose-900/10 pointer-events-none"></div>
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm font-bold mb-8 animate-pulse">
-            ⚠️ Apenas 3 vagas por mês
-          </div>
-          <h2 className="text-4xl md:text-6xl font-black mb-6">
-            Seu concorrente já está <br/>
-            <span className="text-rose-500">automatizando.</span>
-          </h2>
-          <p className="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">
-            Cada dia parado é dinheiro na mesa. Garanta sua vaga e pare de ser refém do operacional.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-6">
-            <Button href="https://wa.me/5531975285780?text=Quero garantir minha vaga" className="!text-lg !px-10 !py-5">
-              Garantir Minha Vaga
-            </Button>
-          </div>
-          <p className="mt-8 text-sm text-slate-500">
-            ✅ Diagnóstico gratuito &nbsp;&nbsp;•&nbsp;&nbsp; ✅ Proposta em 24h &nbsp;&nbsp;•&nbsp;&nbsp; ✅ Resultados garantidos
-          </p>
-        </div>
-      </Section>
-
-      {/* Footer */}
-      <footer className="bg-slate-950 border-t border-white/10 pt-20 pb-10">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-4 gap-12 mb-16">
-            <div className="col-span-1 md:col-span-2">
-              <div className="text-2xl font-bold mb-6">N<span className="text-rose-500">Codes</span></div>
-              <p className="text-slate-400 max-w-sm mb-6">
-                Transformamos negócios caóticos em máquinas de vendas eficientes através de automação e inteligência artificial.
-              </p>
-              <div className="flex gap-4">
-                {/* Social Placeholders */}
-                <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center hover:bg-rose-500 transition-colors cursor-pointer text-white">
-                  <MessageSquare size={20} />
-                </div>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="font-bold text-lg mb-6">Soluções</h4>
-              <ul className="space-y-4 text-slate-400 text-sm">
-                <li><a href="#solucoes" className="hover:text-rose-500 transition-colors">Chatbot 24/7</a></li>
-                <li><a href="#solucoes" className="hover:text-rose-500 transition-colors">Automação Total</a></li>
-                <li><a href="#solucoes" className="hover:text-rose-500 transition-colors">CRM & Vendas</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold text-lg mb-6">Contato</h4>
-              <ul className="space-y-4 text-slate-400 text-sm">
-                <li className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                  <a href="https://wa.me/5531975285780" className="hover:text-white transition-colors">(31) 97528-5780</a>
-                </li>
-                <li>vale.nocode@gmail.com</li>
-                <li>Pará de Minas, MG</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-600 text-sm">
-            <p>&copy; 2024 NCodes. Automatize hoje, domine amanhã.</p>
-            <div className="flex gap-6 mt-4 md:mt-0">
-              <span>Termos</span>
-              <span>Privacidade</span>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-}
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<NCodesLanding />);
+    </script>
+</body>
+</html>
